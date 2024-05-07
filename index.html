@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Taking App</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sedan:ital@0;1&family=Tilt+Neon&display=swap');
+
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url("https://assets-global.website-files.com/5f7ece8a7da656e8a25402bc/631f32ee984371cb97df4ce2_How%20to%20take%20notes%20from%20a%20textbook.png");
+            background-position: center;
+            background-size: cover;
+        }
+
+        .hero {
+            height: 290px;
+            width: 350px;
+            border: 2px solid black;
+            padding: 10px 15px;
+            text-align: center;
+            box-shadow: 4px 4px 10px 2px black;
+            background-color: rgba(0, 0, 0, 0.217);
+            backdrop-filter: blur(10px);
+            /* color: aliceblue; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            margin-bottom: 8px;
+        }
+
+        .hero input {
+            padding: 5px;
+        }
+
+        .output {
+            /* border: 2px solid black; */
+            margin-top: 10px;
+            height: 170px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: black;
+        }
+
+        .output>#noteList {
+            list-style: none;
+        }
+
+        .output>#noteList>.noteItem {
+            margin-bottom: 4px;
+            background-color: rgb(76, 67, 72);
+            width: 250px;
+            /* display: flex;
+            justify-content: center;
+            align-items: center; */
+            border-radius: 20px;
+            padding: 5px;
+            color: aliceblue;
+        }
+
+        .output>#noteList .DeleteBTN {
+            margin-left: 50px;
+            cursor: pointer;
+        }
+
+        .output>#noteList .EditBTN {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Note Taking App</h1>
+            <div class="notes">
+                <input type="text" name="Notes" id="note" placeholder="Enter your Note">
+                <input type="button" value="Add Notes" id="noteBtn">
+            </div>
+            <div class="output">
+                <ul id="noteList">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    function addNotes() {
+
+        let Btn = document.getElementById('noteBtn');
+
+        Btn.addEventListener('click', function () {
+
+            let noteInput = document.getElementById('note');
+            let noteText = noteInput.value.trim();
+
+            console.log('btn clicked');
+
+            if (noteText !== "") {
+                let noteList = document.getElementById('noteList');
+                let li = document.createElement('li');
+                li.textContent = noteText;
+                li.className = 'noteItem';
+                noteList.appendChild(li);
+                noteInput.value = "" //Clear the input fiels after adding Note
+
+                //Delete Button Login
+
+                const deleteBtn = document.createElement('span');
+                deleteBtn.textContent = "❌";
+                deleteBtn.className = 'DeleteBTN';
+                // noteList.append(span);
+                li.appendChild(deleteBtn);
+
+                deleteBtn.onclick = function () {
+                    li.remove();
+                }
+
+                //Edit Button Logic
+
+                const editBtn = document.createElement('span')
+                editBtn.textContent = "✏️";
+                editBtn.className = "EditBTN"
+                li.appendChild(editBtn);
+
+                editBtn.onclick = function () {
+                    inputField = document.createElement('input');
+                    inputField.type = 'text'
+                    inputField.value = noteText;
+                    li.textContent = "";
+                    li.appendChild(inputField)
+                    inputField.focus();
+
+                    inputField.addEventListener('keypress', function (e) {
+                        if (e.key === 'Enter') {
+                            let newText = inputField.value.trim();
+
+                            if (newText !== '') {
+                                li.textContent = newText;
+                                li.appendChild(deleteBtn)
+                                li.appendChild(editBtn)
+                            }
+                            else {
+                                li.remove();
+                            }
+                        }
+                    });
+                }
+            }
+        })
+    }
+
+
+    addNotes()
+</script>
+</html>
